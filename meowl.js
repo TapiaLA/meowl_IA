@@ -59,9 +59,18 @@ const cargarLista = (archivo) => {
 const gruposVIP = cargarLista('./vip.json');
 const listaNegra = cargarLista('./negra.json');
 
+// --- NUEVO: DETECCIÓN MULTIPLATAFORMA (Windows / Linux / Termux) ---
+let rutaChrome = null;
+// Pregunta si existe la ruta del navegador de Termux
+if (fs.existsSync('/data/data/com.termux/files/usr/bin/chromium')) {
+    rutaChrome = '/data/data/com.termux/files/usr/bin/chromium';
+    console.log('📱 [Sistema] Modo Termux Activado - Usando Chromium nativo');
+}
+
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
+        executablePath: rutaChrome, // Si es Windows queda vacío y usa el normal
         headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
     }

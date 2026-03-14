@@ -30,6 +30,14 @@ if ! command -v python &> /dev/null && ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
+# 1.8 Parche para Termux (Android) - Prevenir error de Puppeteer
+if [ "$(uname -o)" = "Android" ]; then
+    echo -e "${CYAN}[!] Detectado Termux (Android). Preparando motor de Chrome...${NC}"
+    pkg install chromium -y
+    export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+    export PUPPETEER_SKIP_DOWNLOAD=true
+fi
+
 # 2. Instalar librerías del proyecto
 echo "[1/5] Instalando dependencias de Meowl (La Antena)..."
 npm install
