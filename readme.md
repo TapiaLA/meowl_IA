@@ -18,9 +18,11 @@ Hemos diseñado un ecosistema de asistentes para que no tengas que tocar el cód
 
 1. Clonar el repositorio:
 
-Bash
+
 git clone https://github.com/LuisAngelTapiaRamirez/meowl_IA.git
+
 cd meowl_IA
+
 2. Asistente de Instalación (Doble clic en 1_instalar.bat):
 Este script instalará automáticamente todas las dependencias de Node.js, las librerías de Python (Flask, Google GenAI, Dotenv), configurará el monitor PM2 a nivel global y lanzará el creador del archivo oculto .env para tus API Keys.
 
