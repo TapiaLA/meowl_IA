@@ -1,0 +1,12 @@
+entorno/
+.env
+node_modules/
+.wwebjs_auth/
+.wwebjs_cache/
+npm-debug.log*
+
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/

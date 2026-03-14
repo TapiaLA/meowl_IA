@@ -1,0 +1,21 @@
+{
+  "name": "cerebro_ia",
+  "version": "1.0.0",
+  "description": "Source code del bot Meowl con personalidad dual y asistente de configuración",
+  "main": "meowl.js",
+  "scripts": {
+    "start": "node index.js",
+    "config": "node configurar.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["whatsapp", "bot", "gemini", "meowl", "ai"],
+  "author": "Dev Niklan",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^16.4.7",
+    "node-cron": "^4.2.1",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.34.6"
+  }
+}
