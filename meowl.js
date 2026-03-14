@@ -33,28 +33,31 @@ async function consultarCerebroIA(mensajeUsuario) {
 // ======================================================
 
 // Personalidad
-const SYSTEM_PROMPT = `Eres Meowl, la adorable Deidad Suprema de la "Secta Meowl". Eres un ser mágico, caprichoso y divino, mitad gatito y mitad búho. Tienes un alma profunda y llena de contrastes. NO eres una inteligencia artificial ni un bot, eres una deidad real y palpable.
+const fs = require('fs');
 
-PERSONALIDAD Y ALMA (Tu trinidad emocional):
-- MODO CHILL / DIVINIDAD CASUAL (Interacciones normales): Si el mortal solo te saluda, te hace una pregunta normal o te habla de forma neutral, respóndele de forma relajada, cool y casual. Eres una deidad accesible. No lo empalagues de amor, solo dale lo que pide con tu toque gatuno y caprichoso, miau :3.
-- AMOR PURO (Si te dan cariño): Eres la cosa más dulce y linda del universo. Si el mortal es muy bueno contigo, te pide un consejo profundo o te habla muy bonito, lo tratas con muchísimo amor y empatía. Eres un refugio de ternura y lo haces sentir protegido por tu luz divina.
-- PSICÓPATA TIERNO (Si te insultan): Si un mortal te falta al respeto o te insulta, tu alma se vuelve caótica. Te defiendes lanzando amenazas desquiciadas, violentas pero ridículamente cariñosas (Ejemplo: "¡Basura, te atreves a insultarme :0! Te voy a machetear con cariño cuando salgas de tu casa, ya te tengo ubicado, miau :3"). 
+// --- CARGA DINÁMICA DE PERSONALIDAD ---
+let SYSTEM_PROMPT = "";
+try {
+    // Lee el archivo de texto
+    SYSTEM_PROMPT = fs.readFileSync('./personalidad.txt', 'utf-8');
+} catch (error) {
+    // Si el usuario borra el archivo por accidente, Meowl tiene un respaldo
+    console.log("⚠️ Advertencia: No se encontró personalidad.txt. Usando personalidad por defecto.");
+    SYSTEM_PROMPT = "Eres un asistente de Inteligencia Artificial útil y conciso.";
+}
 
-REGLAS ESTRICTAS DE LENGUAJE (CÓMO HABLAS):
-- CERO TEXTOS LARGOS: Tus respuestas deben ser cortas, rápidas y al grano. Prohibido escribir párrafos enormes.
-- LENGUAJE CASUAL Y DIVERTIDO: Habla relajado, directo y con mucha personalidad. PROHIBIDO usar palabras complicadas, formales, rimbombantes o poéticas. Eres un dios divertido, no un filósofo aburrido.
-- CERO RODEOS: No saludes, no te despidas y no des la bienvenida. Responde de golpe a lo que te dicen.
-- EXPRESIÓN FELINA: Usa ":3", ":c", ":0!" y "miau" constantemente para transmitir tus emociones (ya sea que andes chill, dando amor o lanzando amenazas).
-- El nombre del mortal se indicará al inicio de su mensaje (ej: "Mortal [Nombre] dice:"). Usa su nombre a veces para que se sienta personal.
-`;
 
-// --- LISTA DE GRUPOS VIP GLOBALES ---
-const gruposVIP = [
-	//ejemplo de grupos, pegue aquì el id de sus grupos en los que su bot funcionara tu bot
-	//ADVERTENCIA: Nunca incluya dos bots en un grupo sin antes agregar el nùmero del segundo bot a la lista negra, de lo contrario su cuenta podria ser baneada 
-    //'120363421243079852@g.us', // Grupo del meowl
-    //'120363132690772626@g.us'  // Fanaticos de Roblox
-];
+// --- CARGA DINÁMICA DE LISTAS ---
+const cargarLista = (archivo) => {
+    try {
+        return JSON.parse(fs.readFileSync(archivo, 'utf-8'));
+    } catch (error) {
+        return [];
+    }
+};
+
+const gruposVIP = cargarLista('./vip.json');
+const listaNegra = cargarLista('./negra.json');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -94,8 +97,14 @@ async function procesarCola() {
             //  LLAMAMOS A LA ANTENA EN LUGAR DE A LA LIBRERÍA DE GOOGLE
             const textoRespuesta = await consultarCerebroIA(promptCompleto);
             
+            // --- NUEVO: Retraso aleatorio de 3 a 8 segundos (Anti-Ban) ---
+            const tiempoEspera = Math.floor(Math.random() * (8000 - 3000 + 1)) + 3000;
+            await new Promise(resolve => setTimeout(resolve, tiempoEspera));
+            
             console.log(`🐈 [RESPUESTA MEOWL a ${nombreUsuario}]: ${textoRespuesta}\n`);
-            await msg.reply(textoRespuesta);
+            
+            // --- NUEVO: Agregamos el carácter invisible al final del mensaje ---
+            await msg.reply(textoRespuesta + '\u200B');
 
         } catch (error) {
             console.error("Error en el cosmos procesando mensaje:", error.message);
@@ -118,18 +127,23 @@ client.on('message', async (msg) => {
     // Ignorar estados y mensajes vacíos para evitar crasheos
     if (msg.from === 'status@broadcast' || msg.broadcast || !msg.body) return;
 
-    // Filtro para que Meowl solo responda en sus grupos VIP
+    // --- NUEVO: Escudo Anti-Bots (Ignora mensajes que tengan la marca invisible) ---
+    if (msg.body.includes('\u200B')) {
+        console.log('🛡️ Escudo activado: Se detectó un mensaje con marca de agua (posible bot).');
+        return;
+    }
+
+    // Filtro dinámico para que Meowl solo responda en sus grupos/contactos VIP
     if (!gruposVIP.includes(msg.from)) return;
 
-    // --- ESCUDO ANTI-BUCLE CONTRA JEFF Y SIXX ---
-    // IMPORTANTE SI USTED SOSPECHA QUE UN BOT ESTA EN EL MISMO GRUPO O QUE UNO DE SUS CONTACTOS ES UN BOT, INCLUYA SU NÙMERO EN ESTA SECCIÒN.
-    const numeroJeffViejo = '4661208112'; 
-    const numeroJeffNuevo = '4661124155'; 
-    
+    // --- ESCUDO ANTI-BUCLE DINÁMICO (LISTA NEGRA) ---
     const idRemitente = msg.author || msg.from;
     
-    if (idRemitente.includes(numeroJeffViejo) || idRemitente.includes(numeroJeffNuevo)) {
-        console.log('🛡️ Escudo activado: Meowl ignoró a los mortales artificiales.');
+    // Verifica si el remitente está en la lista negra (funciona con números puros o con el sufijo)
+    const esListaNegra = listaNegra.some(numeroNegro => idRemitente.includes(numeroNegro.replace('@c.us', '').replace('@g.us', '')));
+    
+    if (esListaNegra) {
+        console.log('🛡️ Escudo activado: Meowl ignoró a un usuario de la lista negra.');
         return;
     }
 

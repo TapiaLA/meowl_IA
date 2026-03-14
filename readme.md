@@ -1,62 +1,54 @@
- Meowl-Bot: Source Code (WhatsApp AI + Multi-Key System)
+Meowl es la Deidad Suprema de la "Secta Meowl". No es un simple bot; tiene una personalidad dual que puedes personalizar:
 
-Este repositorio contiene el código fuente de Meowl, un bot inteligente para WhatsApp basado en la API de Google Gemini. Está diseñado con una arquitectura modular para desarrolladores, permitiendo la rotación de múltiples API Keys y una gestión segura de variables de entorno.
-¿Quién es Meowl?
+Modo Amoroso: Dulce y protector con sus seguidores.
 
-Meowl es la Deidad Suprema de la "Secta Meowl". No es un simple bot; tiene una personalidad dual:
+Modo Psicópata Tierno: Si lo insultas, lanzará amenazas desquiciadamente adorables (ej. "¡Te voy a machetear con cariño! :3").
 
-    Modo Amoroso: Dulce y protector con sus seguidores.
+Modo Chill: Una divinidad casual para interacciones normales.
 
-    Modo Psicópata Tierno: Si lo insultas, lanzará amenazas desquiciadamente adorables (ej. "¡Te voy a machetear con cariño! :3").
+⚙️ Requisitos Técnicos
+Sistema: Windows (Recomendado para el uso de los menús interactivos .bat), Linux o Android (Termux).
 
-    Modo Chill: Una divinidad casual para interacciones normales.
+Entornos: Node.js (v18 o superior) y Python (v3.10 o superior).
 
- Requisitos Técnicos
+Claves: Una o varias API Keys de Google AI Studio.
 
-    Sistema: Linux (probado en antiX), Windows o Android (Termux).
+🚀 Instalación y Despliegue (Cero Código)
+Hemos diseñado un ecosistema de asistentes para que no tengas que tocar el código fuente.
 
-    Entorno: Node.js (v18 o superior).
+1. Clonar el repositorio:
 
-    Claves: Una o varias API Keys de Google AI Studio.
-
- Instalación y Despliegue
-1. Clonar y Preparar
 Bash
+git clone https://github.com/LuisAngelTapiaRamirez/meowl_IA.git
+cd meowl_IA
+2. Asistente de Instalación (Doble clic en 1_instalar.bat):
+Este script instalará automáticamente todas las dependencias de Node.js, las librerías de Python (Flask, Google GenAI, Dotenv), configurará el monitor PM2 a nivel global y lanzará el creador del archivo oculto .env para tus API Keys.
 
-git clone https://github.com/LuisAngelTapiaRamirez/cerebro_ia.git
-cd cerebro_ia
-npm install
+3. Panel de Permisos (Doble clic en 2_configurar_listas.bat):
+Un menú interactivo escaneará tus chats de WhatsApp para que, con solo teclear números, agregues contactos a la Lista VIP (quiénes pueden hablar con Meowl) o a la Lista Negra (escudo anti-bots y anti-spam).
 
-2. Configuración Interactiva (CLI Wizard)
+4. El Alma de Meowl (Doble clic en 3_modificar_personalidad.bat):
+Abre un editor de texto donde puedes redactar en lenguaje natural cómo quieres que se comporte tu IA, sin romper el código.
 
-En lugar de crear archivos manualmente, utiliza el asistente interactivo que desarrollamos para generar tu entorno seguro:
-Bash
+5. Encendido Dual:
 
-node configurar.js
+Para iniciar de forma normal: Ejecuta 4_iniciar.bat.
 
-El asistente te pedirá tus API Keys de Gemini y el número del administrador. Esto generará automáticamente un archivo .env protegido por el .gitignore.
-3. Lanzar el Bot
-Bash
+Para iniciar en Modo Servidor (Recomendado): Ejecuta 5_iniciar_pro.bat. Esto levantará a PM2 mostrando una terminal dividida monitoreando la memoria RAM, el servidor Python (Cerebro) y el cliente de WhatsApp (Antena) en tiempo real.
 
-node meowl.js
+(Nota: Consulta el archivo Manual_Meowl.pdf incluido en este repositorio para ver la guía visual paso a paso y evitar baneos).
 
-Escanea el código QR que aparecerá en tu terminal desde WhatsApp > Dispositivos vinculados.
- Estructura del Proyecto
+📂 Estructura del Ecosistema
+servidor.py: El "Cerebro Central". Servidor Flask que procesa la IA con la nueva librería google-genai.
 
-    meowl.js: Motor principal del bot y lógica de la personalidad.
+meowl.js: La "Antena". Motor de WhatsApp y sistema de colas inteligente con pausas humanas (Anti-ban).
 
-    configurar.js: Asistente interactivo para la creación del entorno .env.
+vip.json / negra.json / personalidad.txt: Bases de datos dinámicas alimentadas por los .bat.
 
-    package.json: Gestión de dependencias (dotenv, whatsapp-web.js, generative-ai).
+TÉRMINOS_Y_CONDICIONES.md: Políticas de uso obligatorio.
 
-    .gitignore: Escudo de seguridad para evitar la filtración de claves y sesiones.
-
-    iniciar_bot.bat: Script de arranque rápido para usuarios de Windows.
-
-Notas para Desarrolladores
-
-Este proyecto está bajo licencia MIT. Siéntete libre de hacer un fork, proponer mejoras o adaptar la lógica de personalidad en meowl.js.
-
+👨‍💻 Notas para Desarrolladores
+Este proyecto está bajo licencia MIT. Siéntete libre de hacer un fork, proponer mejoras o adaptar la arquitectura multi-núcleo a tus proyectos.
 
 Desarrollado por: TapiaLA - Dev Niklan
 Estudiante de Ingeniería en TIC - ITESS Campus Salvatierra.
