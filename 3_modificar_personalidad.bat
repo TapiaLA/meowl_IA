@@ -1,30 +1,47 @@
 @echo off
-cd /d "%~dp0"
-title Editor de Personalidad - Meowl IA
-color 0d
-
-echo ==================================================
-echo   🐈🦉 CREADOR DE PERSONALIDAD - MEOWL IA
-echo ==================================================
+cls
+echo =================================================
+echo  🧠 PANEL DE CONTROL DE CONSCIENCIA - MEOWL v1.1
+echo =================================================
+echo Elige que parte del cerebro de la Deidad quieres operar:
 echo.
-echo [INFO] Abriendo el nucleo de personalidad...
+echo 1) 🎭 Modificar Personalidades (Emociones base)
+echo 2) 🌀 Modificar Modos Especiales (Grifo, Ira, Tiempos)
+echo 3) ⚙️ Modificar Ajustes Globales (Nombre, Stickers, Temp)
+echo 4) ❌ Salir
+echo =================================================
+set /p opcion="Ingresa el numero de tu eleccion: "
+
+if "%opcion%"=="1" goto personalidades
+if "%opcion%"=="2" goto modos
+if "%opcion%"=="3" goto ajustes
+if "%opcion%"=="4" goto salir
+
+echo ⚠️ Opcion no valida. Intenta de nuevo.
+goto fin
+
+:personalidades
+echo Abriendo catalogo de emociones...
+notepad .\config_ia\personalidades.json
+goto fin
+
+:modos
+echo Abriendo configuracion de modos...
+notepad .\config_ia\modos.json
+goto fin
+
+:ajustes
+echo Abriendo ajustes generales...
+notepad .\config_ia\ajustes.json
+goto fin
+
+:salir
+echo Operacion cancelada. Saliendo del quirofano...
+goto fin
+
+:fin
 echo.
-echo INSTRUCCIONES:
-echo 1. Se abrira el Bloc de Notas.
-echo 2. Escribe como quieres que se comporte tu IA.
-echo 3. Guarda los cambios (Archivo ^> Guardar).
-echo 4. Cierra el Bloc de Notas.
-echo.
-echo NOTA: Si el bot esta encendido, tendras que 
-echo reiniciarlo para que lea la nueva personalidad.
-echo --------------------------------------------------
-
-:: Si por alguna razón el archivo no existe, el .bat lo crea vacío para evitar errores
-if not exist "personalidad.txt" (
-    echo Escribe aqui como quieres que sea la personalidad de tu bot. > personalidad.txt
-)
-
-:: Este comando abre el archivo con el editor de texto de Windows
-start notepad personalidad.txt
-
+echo ✅ ¡Modificacion terminada!
+echo 🔥 MAGIA v1.1.0: No necesitas reiniciar a Meowl. El Cerebro leera los cambios automaticamente.
+echo =================================================
 pause
