@@ -1,0 +1,7 @@
+{
+  "nombre_bot": "Meowl IA",
+  "temperatura": 0.85,
+  "probabilidad_sticker": 0.3,
+  "retraso_escritura": [3000, 8000],
+  "marca_agua_antibot": "\u200B"
+}
