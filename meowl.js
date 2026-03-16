@@ -1,6 +1,8 @@
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const fs = require('fs');
+// --- NOVEDAD v1.1.1: Reloj Biológico de Inicio ---
+const botStartTime = Math.floor(Date.now() / 1000);
 
 // ======================================================
 // 1. CARGA DE CONFIGURACIONES Y LISTAS
@@ -146,7 +148,11 @@ async function procesarCola() {
 // ======================================================
 client.on('message', async (msg) => {
     if (msg.from === 'status@broadcast' || msg.broadcast || !msg.body) return;
-
+// 🛡️ ESCUDO ANTI-AVALANCHA: Ignorar mensajes de cuando estaba dormido
+    if (msg.timestamp < botStartTime) {
+        console.log('⏳ [Amnesia] Ignorando mensaje antiguo...');
+        return;
+    }
     // Escudo Anti-Bots y Lista VIP/Negra
     if (msg.body.includes('\u200B')) return;
     if (!gruposVIP.includes(msg.from)) return;
